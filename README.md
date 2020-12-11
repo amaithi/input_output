@@ -8,7 +8,7 @@ ng g c parent
 
 ng g c child
 
-Parent.component.ts:
+parent.component.ts:
 
 import { Component, OnInit } from '@angular/core';
 
@@ -21,6 +21,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./parent.component.css']
   
 })
+
 export class ParentComponent implements OnInit {
 
   public firstName:any;
@@ -48,9 +49,59 @@ export class ParentComponent implements OnInit {
   }
 
 }
+
 parent.component.html:
 
 <p>parent works!</p>
 
 <app-child name={{firstName}} (sendData)="receivedData($event)"></app-child>
+
+child.component.ts:
+
+import { Component, OnInit,Input,Output,EventEmitter} from '@angular/core';
+
+@Component({
+
+  selector: 'app-child',
+  
+  templateUrl: './child.component.html',
+  
+  styleUrls: ['./child.component.css']
+  
+})
+
+export class ChildComponent implements OnInit {
+
+  @Input() name:any;
+  
+  @Output() sendData:EventEmitter<any> = new EventEmitter;
+ 
+  @Output() lastName:any;
+  
+  constructor() { }
+
+  ngOnInit(): void {
+  
+  	console.log(this.name)  	
+    
+  }
+  
+  sendDataToParent(){
+  
+  	this.sendData.emit('child data...')
+    
+  }
+  
+}
+
+
+child.component.html:
+
+<p>First Name : {{name}} </p>
+
+<button (click)="sendDataToParent()">send Data to Parent</button>
+
+
+
+
 
